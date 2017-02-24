@@ -1,0 +1,27 @@
+{
+  "name": "mongo-news-scraper",
+  "version": "1.0.0",
+  "description": "A little web app that scrapes news from a news site. Made with Mongo and Cheerio. Edit",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hadicodes/mongo-news-scraper.git"
+  },
+  "author": "Hadi Yousufi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hadicodes/mongo-news-scraper/issues"
+  },
+  "homepage": "https://github.com/hadicodes/mongo-news-scraper#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "cheerio": "^0.22.0",
+    "express": "^4.14.1",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.8.4",
+    "request": "^2.79.0"
+  }
+}
