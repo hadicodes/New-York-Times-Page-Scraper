@@ -42,6 +42,6 @@ db.once("open", function () {
 require("./controllers/articlesController.js")(app);
 
 //Listen on PORT 8000
-app.listen(8000, function () {
+app.listen(PORT, function () {
   console.log("App running on port 8 THOUSAND!!!!!!!!");
 });
