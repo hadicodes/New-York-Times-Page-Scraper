@@ -4,7 +4,7 @@
   "description": "A little web app that scrapes news from a news site. Made with Mongo and Cheerio. Edit",
   "main": "server.js",
   "scripts": {
-    "test": "node server.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
