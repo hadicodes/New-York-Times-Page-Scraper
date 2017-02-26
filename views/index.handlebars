@@ -17,25 +17,30 @@
     </div>
 
     <div class="jumbotron">
-        <h1 class="display-3">PetaPixel Scraper</h1>
+        <h1 class="jumboheader">PetaPixel Scraper</h1>
         <p class="lead">Scrape the leading Photography enthusiast website for exiting articles</p>
         <p><a class="btn btn-lg btn-success" href="/scrape" role="button">Fetch the latest !</a></p>
     </div>
 
-    {{!--News Cards--}} 
-    {{#each result}}
+    {{!--News Cards--}} {{!--Iterate through the results and populate the handlebars injection points with the scraped titles,
+    links, and article snippets.--}} {{#each result}}
     <div class="card news-section">
-        <a href="{{this.link}}"><h4 class="card-header">{{this.title}}</h4></a>
+        <a href="{{this.link}}">
+            <h4 class="card-header">{{this.title}}</h4>
+        </a>
         <div class="card-block">
-            {{!--<h4 class="card-title"></h4></a>--}}
-            <a href="{{this.link}}"><p class="card-text">{{this.articleSnippet}}</p></a>
+            {{!--
+            <h4 class="card-title"></h4>
+            </a>--}}
+            <a href="{{this.link}}">
+                <p class="card-text">{{this.articleSnippet}}</p>
+            </a>
             <br>
             <a href="/articles/{{this._id}}" class="btn btn-primary">Comment</a>
         </div>
     </div>
     <br>
-    <br>
-    {{/each}}
+    <br> {{/each}}
 
 
 

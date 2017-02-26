@@ -16,6 +16,7 @@
     <h3 class="text-muted">Mongo WebScraping</h3>
   </div>
   <hr>
+  {{!--Display the scraped titles, links, and article snippets in this section.--}}
   <div class="row">
     <h1><a href="{{result.link}}" target="_blank">{{result.title}}</a></h1>
     <p>{{result.articleSnippet}}</p>
@@ -23,11 +24,13 @@
   <div class="row">
     <h2>Comments So Far</h2>
   </div>
+  {{!--If no comments exist then display the following ptag info--}}
   <div class="row">
     {{#unless result.comment}}
     <p>There are no comments just yet. Add yours below!</p>
     {{/unless}}
   </div>
+  {{!--Iterate through the comments by author and their message, display them, and have the option to delete them from the user view (also deletes from our db --}}
   <div class="row">
     <ul>
       {{#each result.comment}}
@@ -43,6 +46,7 @@
   <div class="row">
     <h2>Say Something About This Article</h2>
   </div>
+  {{!--Do a post method for the comment(s) a user adds and save it to the db--}}
   <form method="POST" action="/articles/{{result._id}}">
     <div class="form-group row">
       <label for="name" class="col-form-label">Name</label>
