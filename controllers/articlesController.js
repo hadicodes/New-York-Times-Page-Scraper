@@ -7,9 +7,10 @@ var Article = require("../models/Article.js");
 
 module.exports = function (app) {
 
-  app.get('/', function (req, res) {
-    res.redirect('/articles');
-  })
+  app
+    .get('/', function (req, res) {
+      res.redirect('/articles');
+    });
 
   app.get("/scrape", function (req, res) {
     //use request dependecy to grab the body of the html
@@ -20,9 +21,17 @@ module.exports = function (app) {
       // and perform the following
       $(".post-excerpt").each(function (i, element) {
 
-        var title = $(this).children("h2").children("a").text();
-        var link = $(this).children("h2").children("a").attr("href");
-        var articleSnippet = $(this).children("div.text").text();
+        var title = $(this)
+          .children("h2")
+          .children("a")
+          .text();
+        var link = $(this)
+          .children("h2")
+          .children("a")
+          .attr("href");
+        var articleSnippet = $(this)
+          .children("div.text")
+          .text();
 
         if (title && link && articleSnippet) {
           // Save an empty result object
@@ -38,10 +47,9 @@ module.exports = function (app) {
           Article.create(result, function (err, doc) {
             // Log any errors
             if (err) {
-              console.log(err);
-            }
-            // Or log the doc
-            else {
+              console.log(err// Or log the doc
+              );
+            } else {
               console.log(doc);
             }
           });
@@ -52,61 +60,55 @@ module.exports = function (app) {
     res.redirect("/");
   });
 
-
   // This will get the articles we scraped from the mongoDB
   app.get("/articles", function (req, res) {
     // Grab every doc in the Articles array
-    Article.find({}, function (error, doc) {
-      // Log any errors
-      if (error) {
-        console.log(error);
-      }
-      // Or send the doc to the browser as a json object
-      else {
-        res.render("index", {
-          result: doc
-        });
-      }
-    });
+    Article
+      .find({}, function (error, doc) {
+        // Log any errors
+        if (error) {
+          console.log(error// Or send the doc to the browser as a json object
+          );
+        } else {
+          res.render("index", {result: doc});
+        }
+        //Will sort the articles by most recent (-1 = descending order)
+      })
+      .sort({'_id': -1});
   });
 
   // Grab an article by it's ObjectId
   app.get("/articles/:id", function (req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-    Article.findOne({
-        "_id": req.params.id
-      })
-      // ..and populate all of the comments associated with it
+    // Using the id passed in the id parameter, prepare a query that finds the
+    // matching one in our db...
+    Article.findOne({"_id": req.params.id})
+    // ..and populate all of the comments associated with it
       .populate("comment")
-      // now, execute our query
+    // now, execute our query
       .exec(function (error, doc) {
         // Log any errors
         if (error) {
-          console.log(error);
-        }
-        // Otherwise, send the doc to the browser as a json object
-        else {
-          res.render("comments", {
-            result: doc
-          });
+          console.log(error// Otherwise, send the doc to the browser as a json object
+          );
+        } else {
+          res.render("comments", {result: doc});
           // res.json (doc);
         }
       });
   });
 
-
-  // Create a new comment 
+  // Create a new comment
   app.post("/articles/:id", function (req, res) {
     // Create a new Comment and pass the req.body to the entry
-    Comment.create(req.body, function (error, doc) {
-      // Log any errors
-      if (error) {
-        console.log(error);
-      }
-      // Otherwise
-      else {
-        // Use the article id to find and update it's comment
-        Article.findOneAndUpdate({
+    Comment
+      .create(req.body, function (error, doc) {
+        // Log any errors
+        if (error) {
+          console.log(error// Otherwise
+          );
+        } else {
+          // Use the article id to find and update it's comment
+          Article.findOneAndUpdate({
             "_id": req.params.id
           }, {
             $push: {
@@ -118,44 +120,44 @@ module.exports = function (app) {
             new: true
           })
           // Execute the above query
-          .exec(function (err, doc) {
-            // Log any errors
-            if (err) {
-              console.log(err);
-            } else {
-              // Or send the document to the browser
-              res.redirect('back');
-            }
-          });
-      }
-    });
+            .exec(function (err, doc) {
+              // Log any errors
+              if (err) {
+                console.log(err);
+              } else {
+                // Or send the document to the browser
+                res.redirect('back');
+              }
+            });
+        }
+      });
   });
 
   app.delete("/articles/:id/:commentid", function (req, res) {
-        Comment.findByIdAndRemove(req.params.commentid, function (error, doc) {
-            // Log any errors
-            if (error) {
-                console.log(error);
+    Comment
+      .findByIdAndRemove(req.params.commentid, function (error, doc) {
+        // Log any errors
+        if (error) {
+          console.log(error// Otherwise
+          );
+        } else {
+          console.log(doc);
+          Article.findOneAndUpdate({
+            "_id": req.params.id
+          }, {
+            $pull: {
+              "comment": doc._id
             }
-            // Otherwise
-            else {
-                console.log(doc);
-                Article.findOneAndUpdate({
-                        "_id": req.params.id
-                    }, {
-                        $pull: {
-                            "comment": doc._id
-                        }
-                    })
-                    // Execute the above query
-                    .exec(function (err, doc) {
-                        // Log any errors
-                        if (err) {
-                            console.log(err);
-                        } 
-                    });
-            }
-        });
-    });
+          })
+          // Execute the above query
+            .exec(function (err, doc) {
+              // Log any errors
+              if (err) {
+                console.log(err);
+              }
+            });
+        }
+      });
+  });
 
-}
+};
